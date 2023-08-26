@@ -1,0 +1,28 @@
+---
+
+- name: configuring apache2 on remote servers
+  hosts: all
+  tasks:
+    - name: install apache2
+      apt:
+         name: apache2
+         state: present
+         update_cache: yes
+    - name: Edit index.html file
+      copy:
+         content: Welcome to Apache Software
+         dest: /var/www/html/index.html
+    - name: Restart Apache2
+      service:
+         name: apache2
+         state: restarted
+    - name: Take the response of apache2 on server1
+      uri:
+         url: http://172.31.18.20
+         status_code: 200
+    - name: Take the response of apache2 on server2
+      uri:
+         url: http://172.31.23.197
+         status_code: 200
+
+...

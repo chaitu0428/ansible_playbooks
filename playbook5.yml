@@ -1,0 +1,12 @@
+---
+- name: create fol/dir
+  hosts: all
+  tasks:
+    - name: create folder
+      file:
+        name: /tmp/file1000
+        state: directory
+        owner: sivamma
+        group: root
+...
+
