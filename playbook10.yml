@@ -1,0 +1,20 @@
+---
+- name: creating users and create a home directories
+  hosts: all
+  tasks:
+    - name: create users
+      user:
+        name: "{{item.a}}"
+        password: "{{item.b}}"
+        home: "{{item.c}}"
+      with_items:
+        - {a: user1,b: user1,c: /home/user1}
+        - {a: user2,b: user2,c: /tmp/user2}
+
+    - name: copy user home dir
+      copy:
+        src: "{{item.d}}"
+        dest: "{{item.e}}"
+      with_items:
+        - {d: /tmp/group,e: /home/user1}
+        - {e: /tmp/group,e: /tmp/user2}

@@ -1,0 +1,48 @@
+---
+
+- name: configuring tomcat9 using loops
+  hosts: all
+  tasks:
+    - name: Install tomcat9 and tomcat9-admin
+      apt: 
+        name: "{{item.a}}"
+        state: "{{item.b}}"
+        update_cache: "{{item.c}}"
+      with_items:
+        - {a: tomcat9,b: present,c: yes}
+        - {a: tomcat9-admin,b: present,c: no}
+
+    - name: copy tomcat-user.xml file
+      copy:
+        src: tomcat-users.xml
+        dest: /etc/tomcat9
+
+    - name: change the port 8080 to 9090
+      replace:
+        regexp: 8080
+        replace: 9090
+        path: /etc/tomcat9/server.xml
+
+    - name: Restart tomcat9
+      service:
+        name: tomcat9
+        state: restarted
+
+    - name: wait response for 1 minute
+      pause: 
+        minutes: 1
+
+    - name: check response in remote servers
+      uri:
+        url: "{{item.d}}"
+        status_code: "{{item.e}}"
+      with_items:
+        - {d: http://172.31.18.20:9090,e: 200}
+        - {d: http://172.31.23.197:9090,e: 200}    
+
+
+
+...
+
+
+
