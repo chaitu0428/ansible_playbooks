@@ -1,0 +1,15 @@
+---
+
+- name: configuration Apache2 software
+  hosts: all
+  tasks:
+    - name: Install apache2
+      include: "{{item}}"
+      with_items:
+        - installapache2childplaybook.yml
+        - Editindex.htmlfilechildplaybook.yml
+        - RestartApache2childplaybook.yml
+        - checkresponsechildplaybook.yml
+
+...
+

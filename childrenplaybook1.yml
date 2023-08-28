@@ -1,0 +1,6 @@
+---
+
+- name: copy passwords into tmp folder
+  copy:
+    src: /etc/passwd
+    dest: /tmp

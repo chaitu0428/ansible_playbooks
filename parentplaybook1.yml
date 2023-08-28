@@ -1,0 +1,8 @@
+---
+
+- name: parent playbook1
+  hosts: all
+  tasks:
+    - name: copy password file in tmp
+      include: childrenplaybook1.yml
+

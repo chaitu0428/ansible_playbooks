@@ -1,0 +1,44 @@
+---
+- name: configuring Jenkins software files
+  hosts: jenkinsserver
+  tasks: 
+    - name: Install softwares
+      apt:
+        name: "{{item.a}}"
+        state: present
+        update_cache: "{{item.b}}"
+      with_items:
+        - {a: openjdk-11-jdk,b: yes}
+        - {a: git,b: no}
+        - {a: maven,b: no}
+
+    - name: Download jenkins.war file
+      get_url:
+        url: https://get.jenkins.io/war-stable/2.414.1/jenkins.war
+        dest: /home/ubuntu
+
+- name: config tomcat9 software in hosts
+  hosts: servers
+  tasks:
+    - name: Install tomcat9 and tomcat9-admin
+      apt:
+        name: "{{item.a}}"
+        state: present
+        update_cache: "{{item.b}}"
+      with_items:
+        - {a: tomcat9,b: yes}
+        - {a: tomcat9-admin,b: no}
+    - name: copy tomcat9-users.xml file
+      copy: 
+        src: tomcat-users.xml
+        dest: /etc/tomcat9
+      notify: Restart tomcat9
+
+  handlers:
+    - name: Restart tomcat9
+      service:
+        name: tomcat9
+        state: restarted
+
+...
+
