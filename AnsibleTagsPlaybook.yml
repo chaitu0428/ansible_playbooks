@@ -1,0 +1,21 @@
+---
+
+- name: Implementing Tags
+  hosts: all
+  tasks:
+    - name: creating user
+      user:
+        name: rani
+        password: rani
+      tags: user_creation
+    - name: install maven
+      apt:
+        name: maven
+        state: present
+        update_cache: yes
+      tags: maven_installation
+    - name: copy passwd file
+      copy:
+        src: /etc/passwd
+        dest: /tmp
+
