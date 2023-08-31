@@ -1,0 +1,12 @@
+---
+- name: create Docker container
+  hosts: all
+  tasks: 
+    - name: Docker creation
+      docker_container:
+        name: "{{item.a}}"
+        image: "{{item.b}}"
+      with_items:
+        - {a: container1,b: httpd}
+        - {a: container2,b: tomee}
+        - {a: container3,b: centos} 
